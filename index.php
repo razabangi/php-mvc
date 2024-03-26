@@ -1,10 +1,8 @@
 <?php
 
-require('./model.php');
+require('./controller.php');
 
-$product = new Model();
-$products = $product->getData();
-
-require('./view.php');
+$controller = new Controller();
+$controller->index();
 
 // remove php closing tag as per psr if file contain only php remove php closing tag
