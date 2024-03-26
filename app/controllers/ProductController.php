@@ -11,6 +11,6 @@ class ProductController {
     }
 
     public function show() {
-        echo "product show";
+        require('./resources/views/products/show.php');
     }
 }
