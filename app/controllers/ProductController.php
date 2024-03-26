@@ -9,4 +9,8 @@ class ProductController {
 
         require('./resources/views/products/index.php');
     }
+
+    public function show() {
+        echo "product show";
+    }
 }
