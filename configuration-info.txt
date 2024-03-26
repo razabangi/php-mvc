@@ -1,0 +1,17 @@
+C:\laragon\bin\apache\httpd-2.4.54-win64-VS16\conf\original\httpd.conf
+C:\laragon\bin\apache\httpd-2.4.54-win64-VS16\conf\httpd.conf
+    For enable rewrite mode you have to findout httpd.conf and find "mod_rewrite"
+    if mod_rewrite's line commented so you will have to uncomment for enabling this mode
+
+
+In Virtual host file:
+    RewriteEngine On
+    RewriteBase "/myapp/"
+    RewriteRule "^index\.html$"  "welcome.html"
+
+    add this for pretty url
+
+    OR
+
+For shared hosting add the .htaccess file for urls
+
