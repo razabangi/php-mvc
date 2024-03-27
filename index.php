@@ -1,31 +1,28 @@
 <?php
 
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-// $segments = explode('/', $path);
+use app\Controllers\HomeController;
+use app\Controllers\ProductController;
+use Framework\Router;
 
-require('./routes/web.php');
-$router = new Route();
-$router->add('/products/show', ['controller' => 'product', 'action' => 'show']);
-$router->add('/', ['controller' => 'home', 'action' => 'index']);
-$router->add('/products', ['controller' => 'product', 'action' => 'index']);
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+spl_autoload_register(function(string $className) {
+    require(str_replace('\\', '/', $className) . '.php');
+});
+
+$router = new Router();
+$router->add('/products/show', ['controller' => ProductController::class, 'action' => 'show']);
+$router->add('/', ['controller' => HomeController::class, 'action' => 'index']);
+$router->add('/products', ['controller' => ProductController::class, 'action' => 'index']);
 
 if ($segments = $router->match($path)) {
 } else {
     exit("No route found.");
 }
-//request => https://mvc-php.text/product/show
-// Array
-// (
-//     [0] => 
-//     [1] => product
-//     [2] => show
-// )
 
 // front controller
 $action = $segments['action'] ?? 'index'; // show
 $controller = $segments['controller'] ?? null; // product
 
-$controller = ucfirst($controller) . 'Controller';
-require("./app/controllers/$controller".'.php');
 $controllerObj = new $controller;
 $controllerObj->$action();

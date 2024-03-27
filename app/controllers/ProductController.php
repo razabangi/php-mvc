@@ -1,5 +1,9 @@
 <?php
 
+namespace app\Controllers;
+
+use app\Models\Product;
+
 class ProductController {
     public function index() {
         require('./app/models/Product.php');
