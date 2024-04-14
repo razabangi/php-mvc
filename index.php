@@ -11,7 +11,8 @@ spl_autoload_register(function(string $className) {
 });
 
 $router = new Router();
-$router->add("/{controller}/{action}");
+// $router->add("/{controller}/{action}");
+$router->add("/products/{slug:[\w-]+}", ['controller' => 'products', 'action' => 'show']);
 $router->add("/{controller}/{id:\d+}/{action}");
 $router->add('/products/show', ['controller' => "products", 'action' => 'show']);
 $router->add('/', ['controller' => "home", 'action' => 'index']);
@@ -21,7 +22,7 @@ if ($segments = $router->match($path)) {
 } else {
     exit("No route found.");
 }
-print_r($segments);
+
 // front controller
 $action = $segments['action'] ?? 'index'; // show
 $controller = "App\Controllers\\" . ucwords($segments["controller"]);

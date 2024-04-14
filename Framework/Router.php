@@ -19,6 +19,7 @@ class Router
     }
 
     public function match(string $path): array|bool {
+        $path = urldecode($path);
         $path = trim($path, "/");
         // $pattern = "#/home/index#"; // match when /home/index but also match when /admin/home/index123
         // $pattern = "#^/home/index#"; // match when /home/index but not match when /admin/home/index123 because of start of string ^ but its also correct for /home/index123
@@ -45,15 +46,15 @@ class Router
 
         $segments = array_map(function($segment): string {
             if (preg_match("#^\{([a-z][a-z0-9]*)\}$#", $segment, $matches)) {
-                $segment = "(?<" . $matches[1] . ">[^/]*)";
+                return "(?<" . $matches[1] . ">[^/]*)";
             }
             if (preg_match("#^\{([a-z][a-z0-9]*):(.+)\}$#", $segment, $matches)) {
-                $segment = "(?<" . $matches[1] . ">" . $matches[2] . ")";
+                return "(?<" . $matches[1] . ">" . $matches[2] . ")";
             }
 
             return $segment;
         }, $segments);
 
-        return "#^" . implode("/", $segments) . "$#";
+        return "#^" . implode("/", $segments) . "$#iu";
     }
 }
