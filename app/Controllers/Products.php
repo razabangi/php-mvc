@@ -4,10 +4,8 @@ namespace app\Controllers;
 
 use app\Models\Product;
 
-class ProductController {
+class Products {
     public function index() {
-        require('./app/models/Product.php');
-
         $product = new Product();
         $products = $product->getData();
 

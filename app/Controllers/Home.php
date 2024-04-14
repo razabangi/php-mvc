@@ -2,7 +2,7 @@
 
 namespace app\Controllers;
 
-class HomeController {
+class Home {
     public function index() {
         require('./resources/views/index.php');
     }

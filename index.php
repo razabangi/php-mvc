@@ -1,7 +1,7 @@
 <?php
 
-use app\Controllers\HomeController;
-use app\Controllers\ProductController;
+use app\Controllers\Home;
+use app\Controllers\Products;
 use Framework\Router;
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -11,9 +11,9 @@ spl_autoload_register(function(string $className) {
 });
 
 $router = new Router();
-$router->add('/products/show', ['controller' => ProductController::class, 'action' => 'show']);
-$router->add('/', ['controller' => HomeController::class, 'action' => 'index']);
-$router->add('/products', ['controller' => ProductController::class, 'action' => 'index']);
+$router->add('/products/show', ['controller' => Products::class, 'action' => 'show']);
+$router->add('/', ['controller' => Home::class, 'action' => 'index']);
+$router->add('/products/index', ['controller' => Products::class, 'action' => 'index']);
 
 if ($segments = $router->match($path)) {
 } else {
@@ -22,7 +22,7 @@ if ($segments = $router->match($path)) {
 
 // front controller
 $action = $segments['action'] ?? 'index'; // show
-$controller = $segments['controller'] ?? null; // product
+$controller = "App\Controllers\\" . ucwords($segments["controller"]);
 
 $controllerObj = new $controller;
 $controllerObj->$action();
