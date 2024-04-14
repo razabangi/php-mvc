@@ -11,9 +11,10 @@ spl_autoload_register(function(string $className) {
 });
 
 $router = new Router();
-$router->add('/products/show', ['controller' => Products::class, 'action' => 'show']);
-$router->add('/', ['controller' => Home::class, 'action' => 'index']);
-$router->add('/products/index', ['controller' => Products::class, 'action' => 'index']);
+$router->add("/{controller}/{action}");
+$router->add('/products/show', ['controller' => "products", 'action' => 'show']);
+$router->add('/', ['controller' => "home", 'action' => 'index']);
+$router->add('/products', ['controller' => "products", 'action' => 'index']);
 
 if ($segments = $router->match($path)) {
 } else {
@@ -23,6 +24,5 @@ if ($segments = $router->match($path)) {
 // front controller
 $action = $segments['action'] ?? 'index'; // show
 $controller = "App\Controllers\\" . ucwords($segments["controller"]);
-
 $controllerObj = new $controller;
 $controllerObj->$action();
