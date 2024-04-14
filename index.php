@@ -16,6 +16,7 @@ $router->add("/{controller}/{id:\d+}/{action}");
 $router->add('/products/show', ['controller' => "products", 'action' => 'show']);
 $router->add('/', ['controller' => "home", 'action' => 'index']);
 $router->add('/products', ['controller' => "products", 'action' => 'index']);
+$router->add("/admin/{controller}/{action}", ['namespace' => 'Admin']);
 $router->add("/{controller}/{action}");
 
 $dispatcher = new Dispatcher($router);
