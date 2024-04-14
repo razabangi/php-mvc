@@ -11,6 +11,7 @@ spl_autoload_register(function(string $className) {
 
 $router = new Router();
 $router->add("/product/{slug:[\w-]+}", ['controller' => 'products', 'action' => 'show']);
+$router->add("{title:[\w]+}/{id:[\d]+}", ['controller' => 'products', 'action' => 'someExample']);
 $router->add("/{controller}/{id:\d+}/{action}");
 $router->add('/products/show', ['controller' => "products", 'action' => 'show']);
 $router->add('/', ['controller' => "home", 'action' => 'index']);

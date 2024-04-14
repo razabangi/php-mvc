@@ -16,4 +16,8 @@ class Products {
         echo $id;
         require('./resources/views/products/show.php');
     }
+
+    public function someExample(string $title, string $id) {
+        echo $title . " " . $id . " example method";
+    }
 }
