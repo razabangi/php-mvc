@@ -6,14 +6,13 @@ use app\Models\Product;
 use Framework\Viewer;
 
 class Products {
-    public function __construct(private Viewer $viewer)
+    public function __construct(private Viewer $viewer, private Product $product)
     {
         
     }
 
     public function index() {
-        $product = new Product();
-        $products = $product->getData();
+        $products = $this->product->getData();
         echo $this->viewer->render('shared/header.php', [
             'title' => 'Products | MVC'
         ]);
