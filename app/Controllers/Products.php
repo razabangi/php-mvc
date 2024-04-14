@@ -12,7 +12,8 @@ class Products {
         require('./resources/views/products/index.php');
     }
 
-    public function show() {
+    public function show(string $id) {
+        echo $id;
         require('./resources/views/products/show.php');
     }
 }
