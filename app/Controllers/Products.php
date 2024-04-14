@@ -3,13 +3,14 @@
 namespace app\Controllers;
 
 use app\Models\Product;
+use Framework\Viewer;
 
 class Products {
     public function index() {
         $product = new Product();
         $products = $product->getData();
-
-        require('./resources/views/products/index.php');
+        $viewer = new Viewer();
+        $viewer->render('products/index.php', $products);
     }
 
     public function show(string $id) {
