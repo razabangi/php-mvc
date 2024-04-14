@@ -17,8 +17,8 @@ class Dispatcher
         }
         
         // front controller
-        $action = $segments['action'] ?? 'index'; // show
-        $controller = "App\Controllers\\" . ucwords($segments["controller"]);
+        $action = $this->getActionName($segments);
+        $controller = $this->getControllerName($segments);
         $controllerObj = new $controller;
         $args = $this->getActionArguments($controller, $action, $segments);
         $controllerObj->$action(...$args);
@@ -34,5 +34,20 @@ class Dispatcher
         }
 
         return $args;
+    }
+
+    private function getControllerName($params) {
+        $controller = $params['controller'];
+        $controller = str_replace("-", "", ucwords(strtolower($controller), "-"));
+        $namespace = "app\Controllers";
+        
+        return $namespace . "\\" . $controller;
+    }
+
+    private function getActionName($params) {
+        $action = $params['action'];
+        $action = lcfirst(str_replace("-", "", ucwords(strtolower($action), "-")));
+
+        return $action;
     }
 }
