@@ -10,7 +10,7 @@ class Products {
         $product = new Product();
         $products = $product->getData();
         $viewer = new Viewer();
-        $viewer->render('products/index.php', [
+        echo $viewer->render('products/index.php', [
             'products' => $products
         ]);
     }
