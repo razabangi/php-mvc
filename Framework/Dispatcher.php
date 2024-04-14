@@ -19,7 +19,7 @@ class Dispatcher
         // front controller
         $action = $this->getActionName($segments);
         $controller = $this->getControllerName($segments);
-        $controllerObj = new $controller;
+        $controllerObj = new $controller(new Viewer);
         $args = $this->getActionArguments($controller, $action, $segments);
         $controllerObj->$action(...$args);
     }
@@ -42,7 +42,7 @@ class Dispatcher
         $namespace = "app\Controllers";
 
         if (array_key_exists('namespace', $params)) {
-            $namespace = "app\Controllers\\" . $params['namespace'];
+            $namespace .= "\\" . $params['namespace'];
         }
         
         return $namespace . "\\" . $controller;

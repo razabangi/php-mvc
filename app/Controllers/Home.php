@@ -5,10 +5,16 @@ namespace app\Controllers;
 use Framework\Viewer;
 
 class Home {
+    public function __construct(private Viewer $viewer)
+    {
+        
+    }
+
     public function index() {
-        $viewer = new Viewer();
-        echo $viewer->render('shared/header.php');
-        echo $viewer->render('index.php');
-        echo $viewer->render('shared/footer.php');
+        echo $this->viewer->render('shared/header.php', [
+            'title' => 'Home'
+        ]);
+        echo $this->viewer->render('index.php');
+        echo $this->viewer->render('shared/footer.php');
     }
 }
