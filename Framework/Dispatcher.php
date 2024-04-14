@@ -1,7 +1,7 @@
 <?php
 namespace Framework;
 
-use app\Models\Product;
+use ReflectionClass;
 use ReflectionMethod;
 
 class Dispatcher
@@ -20,7 +20,18 @@ class Dispatcher
         // front controller
         $action = $this->getActionName($segments);
         $controller = $this->getControllerName($segments);
-        $controllerObj = new $controller(new Viewer, new Product);
+
+        $reflector = new ReflectionClass($controller);
+        $constructor = $reflector->getConstructor();
+        $dependencies = [];
+        if ($constructor !== null) {
+            foreach ($constructor->getParameters() as $key => $parameter) {
+                $type = (string) $parameter->getType();
+                $dependencies[] = new $type;
+            }
+        }
+
+        $controllerObj = new $controller(...$dependencies);
         $args = $this->getActionArguments($controller, $action, $segments);
         $controllerObj->$action(...$args);
     }
