@@ -1,3 +1,3 @@
 <?php
 
-echo "show product";
+echo "show product: $id";
