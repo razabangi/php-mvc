@@ -1,14 +1,18 @@
 <?php
 
-namespace app\Models;
+namespace App\Models;
 
-use app\Database;
+use App\Database;
 use PDO;
 
 class Product {
+    public function __construct(private Database $database)
+    {
+        
+    }
+
     public function getData(): array {
-        $connection = new Database();
-        $pdo = $connection->getConnection();
+        $pdo = $this->database->getConnection();
         
         $stmt = $pdo->query("select * from products");
 

@@ -21,17 +21,7 @@ class Dispatcher
         $action = $this->getActionName($segments);
         $controller = $this->getControllerName($segments);
 
-        $reflector = new ReflectionClass($controller);
-        $constructor = $reflector->getConstructor();
-        $dependencies = [];
-        if ($constructor !== null) {
-            foreach ($constructor->getParameters() as $key => $parameter) {
-                $type = (string) $parameter->getType();
-                $dependencies[] = new $type;
-            }
-        }
-
-        $controllerObj = new $controller(...$dependencies);
+        $controllerObj = $this->getObject($controller);
         $args = $this->getActionArguments($controller, $action, $segments);
         $controllerObj->$action(...$args);
     }
@@ -39,7 +29,7 @@ class Dispatcher
     private function getActionArguments(string $controller, string $action, array $params): array {
         $args = [];
         $method = new ReflectionMethod($controller, $action);
-        foreach ($method->getParameters() as $key => $parameter) {
+        foreach ($method->getParameters() as $parameter) {
             $name = $parameter->getName();
 
             $args[$name] = $params[$name];
@@ -51,7 +41,7 @@ class Dispatcher
     private function getControllerName($params) {
         $controller = $params['controller'];
         $controller = str_replace("-", "", ucwords(strtolower($controller), "-"));
-        $namespace = "app\Controllers";
+        $namespace = "App\Controllers";
 
         if (array_key_exists('namespace', $params)) {
             $namespace .= "\\" . $params['namespace'];
@@ -65,5 +55,21 @@ class Dispatcher
         $action = lcfirst(str_replace("-", "", ucwords(strtolower($action), "-")));
 
         return $action;
+    }
+
+    private function getObject(string $className) {
+        $reflector = new ReflectionClass($className);
+        $constructor = $reflector->getConstructor();
+        $dependencies = [];
+        if ($constructor === null) {
+            return new $className;
+        }
+
+        foreach ($constructor->getParameters() as $key => $parameter) {
+            $type = (string) $parameter->getType();
+            $dependencies[] = $this->getObject($type);
+        }
+
+        return new $className(...$dependencies);
     }
 }
